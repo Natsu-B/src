@@ -6,9 +6,13 @@ mod print;
 
 use core::{arch::asm,panic::PanicInfo};
 
+use src::read;
+
 #[no_mangle]
 fn efi_main() -> ! {
     println!("Hello");
+    let i = read();
+    println!("{}",i);
     loop {unsafe{asm!("wfi");}}
 }
 

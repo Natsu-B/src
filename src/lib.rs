@@ -3,6 +3,7 @@
 #[path = "./print.rs"]
 #[macro_use]
 pub mod print;
+
 use core::{panic, u8};
 
 use print::putc;
@@ -24,33 +25,29 @@ const MAX_ELEMENTS: usize = 10;
 pub fn read() -> i32 {
     let return_math = scan();
     println!("{:?}",return_math);
-    let mut math: i32 = 0;
-    let mut len = 0;
-    let mut flag = false;
-    for i in 0..MAX_ELEMENTS {
-        if return_math[MAX_ELEMENTS - i - 1] == 0 {
-            len = i + 1; //0~MAX_ELEMENTS - 1まで０でlen個埋まってる
-        } else if return_math[MAX_ELEMENTS - i - 1] == MINUS {
-            len = i - 1;
-        }    
+    let j = return_math[0];
+    if j == MINUS {
+        let i = _read(&return_math, 0, 1);
+        return -i;
+    }else if j >= 48 && j <= 57 {
+        let i = _read(&return_math, (j - 48) as i32, 1);
+        return i;
+    } else {
+        println!("unreachable but reach in fn read()");
+        unreachable!();
     }
-    println!("{}",len);
-    for i in 0..=MAX_ELEMENTS - len {
-        if return_math[i] == MINUS {
-            flag = true;
-        } else if (return_math[i] > 48 || 57 > return_math[i]) {
-            math +=
-                ((return_math[i] - 48) as i32 * index(MAX_ELEMENTS - 1 - len - i));
-        } else {
-            println!("Panic!!!");
-            unreachable!();
-        }
+}
+
+fn _read(return_math: &[u8;MAX_ELEMENTS],i: i32,u:usize) -> i32 {
+    let j = return_math[u];
+    if j == 0 {
+        i
+    } else if j >= 48 && j <= 57 {
+        _read(&return_math,(i * 10 + ((j - 48) as i32)), u + 1)
+    } else {
+        println!("unreachhable but reach in fn _read()");
+        unreachable!();
     }
-    if flag {
-        math *= -1;
-    }
-    println!("{}",math);
-    math
 }
 
 fn scan() -> [u8; MAX_ELEMENTS] {
