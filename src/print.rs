@@ -1,10 +1,11 @@
-use core::fmt::{self, Write};
+#![no_std]
 
+use core::fmt::{self, Write};
+use core::result::Result::Ok;
 
 const PL011:usize = 0x09000000;
 const UART_DR:usize = 0x0;
 const UART_FR:usize = 0x018;
-
 
 #[macro_export]
 macro_rules! print {
@@ -33,9 +34,9 @@ impl Write for UartWriter {
     }
 }
 
-fn putc(c: u8) {
+pub fn putc(c: u8) {
     loop{
-        if(is_write_fifo_full() == false){
+        if is_write_fifo_full() == false {
             write_char(c);
             break;
         }

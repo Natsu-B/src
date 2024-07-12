@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "try_print"
+name = "src"
 version = "0.1.0"
